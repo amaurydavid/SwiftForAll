@@ -14,6 +14,20 @@
     "projectTypes": [
       "android",
       "ios"
+    ],
+    "options": [
+      {
+        "name": "Always show Swift snippets",
+        "type": "switch",
+        "id": "alwaysShowSwift",
+        "default": false
+      },
+      {
+        "name": "Always show XML snippets",
+        "type": "switch",
+        "id": "alwaysShowXML",
+        "default": false
+      }
     ]
   },
   "dependencies": {

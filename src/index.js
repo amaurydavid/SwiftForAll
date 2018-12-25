@@ -4,6 +4,7 @@
  */
 
 var platformTools = require("./platformTools.js")
+var swiftColors = require("./swiftColors.js")
 
 function layer(context, selectedLayer) {
 
@@ -11,15 +12,14 @@ function layer(context, selectedLayer) {
 
 function styleguideColors(context, colors) {
 
-  const object = {
-    "Project type": context.project.type,
-    "Swift": platformTools.shouldIncludeSwiftSnippets(context),
-    "XML": platformTools.shouldIncludeXMLSnippets(context)
-  };
+  if (!platformTools.shouldIncludeSwiftSnippets(context)) {
+    return ;
+  }
 
+  const structName = context.getOption("swiftColorStructName");
   return {
-  code: JSON.stringify(object, null, 2),
-  language: "json"
+    code: swiftColors.getColorsSwiftFileContent(structName, colors),
+    language: "swift"
   };
 }
 

@@ -27,6 +27,12 @@
         "type": "switch",
         "id": "alwaysShowXML",
         "default": false
+      },
+      {
+        "name": "Swift color structure name",
+        "type": "text",
+        "id": "swiftColorStructName",
+        "default": "MyProject"
       }
     ]
   },

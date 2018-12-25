@@ -29,6 +29,16 @@ function styleguideTextStyles(context, textStyles) {
 
 function exportStyleguideColors(context, colors) {
 
+  if (!platformTools.shouldIncludeSwiftSnippets(context)) {
+    return ;
+  }
+
+  const structName = context.getOption("swiftColorStructName");
+  return {
+    code: swiftColors.getColorsSwiftFileContent(structName, colors),
+    language: "swift",
+    filename: "UIColor+" + structName
+  };
 }
 
 function exportStyleguideTextStyles(context, textStyles) {

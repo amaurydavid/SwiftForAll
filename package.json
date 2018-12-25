@@ -1,0 +1,22 @@
+{
+  "name": "ThePreciousExtension",
+  "version": "0.1.0",
+  "description": "One extension to rule them all. Get Swift & Kotlin snippets on both Android & iOS projects.",
+  "scripts": {
+    "start": "zem start",
+    "build": "zem build",
+    "clean": "zem clean",
+    "exec": "zem exec",
+    "publish": "zem publish"
+  },
+  "zeplin": {
+    "displayName": "ThePreciousExtension",
+    "projectTypes": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {
+    "zem": "^0.3.3"
+  }
+}

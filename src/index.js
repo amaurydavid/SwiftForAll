@@ -18,7 +18,7 @@ function styleguideColors(context, colors) {
 
   const structName = context.getOption("swiftColorStructName");
   return {
-    code: swiftColors.getColorsSwiftFileContent(structName, colors),
+    code: swiftColors.getColorsSwiftSnippet(structName, colors),
     language: "swift"
   };
 }
@@ -37,7 +37,7 @@ function exportStyleguideColors(context, colors) {
   return {
     code: swiftColors.getColorsSwiftFileContent(structName, colors),
     language: "swift",
-    filename: "UIColor+" + structName
+    filename: "UIColor+" + structName + ".swift"
   };
 }
 

@@ -1,3 +1,10 @@
+// Imports
+
+var utils = require('./utils.js')
+var swiftColors = require('./swiftColors.js')
+
+// Public functions
+
 function getTextStylesSwiftFileContent(context, textStyles) {
   return `import UIKit
 
@@ -12,11 +19,11 @@ function getTextStylesSwiftFileContent(context, textStyles) {
 }
 
 function getTextStylesSwiftSnippet(context, textStyles) {
-  return `${getEnumCode(textStyles)}
-
-  extension TextStyle {
-    ${getAttributesCode(context, textStyles)}
-  }`
+  var code = getEnumCode(textStyles) + "\n\n";
+  code += "extension TextStyle {\n";
+  code += utils.tab(1) + getAttributesCode(context, textStyles);
+  code += "\n}";
+  return code
 }
 
 module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet };
@@ -25,44 +32,50 @@ module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet };
 var camelCase = require('camel-case')
 
 function getEnumCode(textStyles) {
-  var code = "enum TextStyle {";
+  var code = "enum TextStyle {\n";
 
   for(var textStyle of textStyles) {
-    code += "\ncase " + camelCase(textStyle.name);
+    code += utils.tab(1) + "case " + camelCase(textStyle.name) + "\n";
   }
 
-  code += "\n}";
+  code += "}";
   return code;
 }
 
 function getAttributesCode(context, textStyles) {
   var code = "var attributes: [NSAttributedString.Key: Any] {\n";
-  code += "switch self {\n";
+  code += utils.tab(2) + "switch self {\n";
   for(var textStyle of textStyles) {
-    code += "case ." + camelCase(textStyle.name) + ":\n";
+    code += utils.tab(2) + "case ." + camelCase(textStyle.name) + ":\n";
     if (shouldUseParagraphStyle(textStyle)) {
       code += getParagraphStyleCreationCode(textStyle) + "\n";
     }
 
-    code += "return [.font: " + getFontCode(textStyle);
+    code += utils.tab(3) + "return [.font: " + getFontCode(context, textStyle);
     if (shouldUseParagraphStyle(textStyle)) {
-      code += ",\n.paragraphStyle: paragraphStyle";
+      code += ",\n" + utils.tab(4) + ".paragraphStyle: paragraphStyle";
     }
     if (typeof textStyle.color !== 'undefined') {
-      code += ",\n.foregroundColor: " + getColorCode(context, textStyle.color);
+      code += ",\n" + utils.tab(4) + ".foregroundColor: " + getColorCode(context, textStyle.color);
     }
     if (typeof textStyle.letterSpacing !== 'undefined' && textStyle.letterSpacing != 0) {
-      code += ",`\n.kern: " + textStyle.letterSpacing;
+      code += ",\n" + utils.tab(4) + ".kern: " + textStyle.letterSpacing;
     }
 
-    code += "]\n";
+    code += "]\n\n";
   }
-  code += "\n}\n}";
+  code += utils.tab(2) + "}\n";
+  code += utils.tab(1) + "}";
   return code;
 }
 
-function getFontCode(textStyle) {
-  return `UIFont(name: "${textStyle.fontFace}", size: ${textStyle.fontSize})`
+function getFontCode(context, textStyle) {
+  const fontFormat = context.getOption("fontFormat")
+  if (fontFormat == "system") {
+    return `UIFont(name: "${textStyle.fontFace}", size: ${textStyle.fontSize})`
+  } else if (fontFormat == "swiftgen") {
+    return `FontFamily.${textStyle.fontFamily}.${textStyle.weightText}.font(size: ${textStyle.fontSize})`;
+  }
 }
 
 function shouldUseParagraphStyle(textStyle) {
@@ -71,26 +84,23 @@ function shouldUseParagraphStyle(textStyle) {
 }
 
 function getParagraphStyleCreationCode(textStyle) {
-  var code = "let paragraphStyle = NSMutableParagraphStyle()\n";
+  var code = utils.tab(3) + "let paragraphStyle = NSMutableParagraphStyle()\n";
   //Handle the textAlign value
   if (typeof textStyle.textAlign !== 'undefined') {
     var swiftValue = textStyle.textAlign;
     if (swiftValue == "justify") {
       swiftValue = "justified";
     }
-    code += "paragraphStyle.alignment = ." + swiftValue + "\n";
+    code += utils.tab(3) + "paragraphStyle.alignment = ." + swiftValue + "\n";
   }
 
   //Handle the lineHeight value
   if (typeof textStyle.lineHeight !== 'undefined') {
-    code += "paragraphStyle.minimumLineHeight = " + textStyle.lineHeight;
+    code += utils.tab(3) + "paragraphStyle.minimumLineHeight = " + textStyle.lineHeight;
   }
 
   return code;
 }
-
-
-var swiftColors = require('./swiftColors.js')
 
 function getColorCode(context, color) {
   const existingColor = context.project.findColorEqual(color)

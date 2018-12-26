@@ -10,7 +10,7 @@
     "publish": "zem publish"
   },
   "zeplin": {
-    "displayName": "Swift",
+    "displayName": "SwiftForAll",
     "projectTypes": [
       "android",
       "ios",
@@ -23,6 +23,22 @@
         "type": "text",
         "id": "colorStructName",
         "default": "MyProject"
+      },
+      {
+        "name": "Font format in text styles",
+        "type": "picker",
+        "id": "fontFormat",
+        "options": [
+          {
+            "name": "System",
+            "value": "system"
+          },
+          {
+            "name": "SwiftGen",
+            "value": "swiftgen"
+          }
+        ],
+        "default": "system"
       }
     ]
   },

@@ -5,6 +5,7 @@
 
 var platformTools = require("./platformTools.js")
 var swiftColors = require("./swiftColors.js")
+var swiftTextStyles = require("./swiftTextStyles.js")
 
 function layer(context, selectedLayer) {
 
@@ -24,7 +25,7 @@ function styleguideColors(context, colors) {
 }
 
 function styleguideTextStyles(context, textStyles) {
-
+  return exportStyleguideTextStyles(context, textStyles);
 }
 
 function exportStyleguideColors(context, colors) {
@@ -42,7 +43,11 @@ function exportStyleguideColors(context, colors) {
 }
 
 function exportStyleguideTextStyles(context, textStyles) {
-
+  return {
+  code: swiftTextStyles.getTextStylesSwiftFileContent(context,textStyles),
+  language: "swift",
+  filename: "TextStyles.swift"
+  };
 }
 
 function comment(context, text) {

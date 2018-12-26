@@ -1,7 +1,7 @@
 {
-  "name": "ThePreciousExtension",
+  "name": "SwiftForAll",
   "version": "0.1.0",
-  "description": "One extension to rule them all. Get Swift & Kotlin snippets on both Android & iOS projects.",
+  "description": "Swift snippets available on all project types!",
   "scripts": {
     "start": "zem start",
     "build": "zem build",
@@ -10,35 +10,24 @@
     "publish": "zem publish"
   },
   "zeplin": {
-    "displayName": "ThePreciousExtension",
+    "displayName": "Swift",
     "projectTypes": [
       "android",
-      "ios"
+      "ios",
+      "osx",
+      "web"
     ],
     "options": [
       {
-        "name": "Always show Swift snippets",
-        "type": "switch",
-        "id": "alwaysShowSwift",
-        "default": false
-      },
-      {
-        "name": "Always show XML snippets",
-        "type": "switch",
-        "id": "alwaysShowXML",
-        "default": false
-      },
-      {
-        "name": "Swift color structure name",
+        "name": "Color structure name",
         "type": "text",
-        "id": "swiftColorStructName",
+        "id": "colorStructName",
         "default": "MyProject"
       }
     ]
   },
   "dependencies": {
     "camel-case": "^3.0.0",
-    "snake-case": "^2.1.0",
     "zem": "^0.3.3"
   }
 }

@@ -3,7 +3,6 @@
  * https://github.com/zeplin/zeplin-extension-documentation
  */
 
-var platformTools = require("./platformTools.js")
 var swiftColors = require("./swiftColors.js")
 var swiftTextStyles = require("./swiftTextStyles.js")
 
@@ -12,12 +11,7 @@ function layer(context, selectedLayer) {
 }
 
 function styleguideColors(context, colors) {
-
-  if (!platformTools.shouldIncludeSwiftSnippets(context)) {
-    return ;
-  }
-
-  const structName = context.getOption("swiftColorStructName");
+  const structName = context.getOption("colorStructName");
   return {
     code: swiftColors.getColorsSwiftSnippet(structName, colors),
     language: "swift"
@@ -29,12 +23,7 @@ function styleguideTextStyles(context, textStyles) {
 }
 
 function exportStyleguideColors(context, colors) {
-
-  if (!platformTools.shouldIncludeSwiftSnippets(context)) {
-    return ;
-  }
-
-  const structName = context.getOption("swiftColorStructName");
+  const structName = context.getOption("colorStructName");
   return {
     code: swiftColors.getColorsSwiftFileContent(structName, colors),
     language: "swift",

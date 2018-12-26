@@ -82,7 +82,7 @@ function getParagraphStyleCreationCode(textStyle) {
 
   //Handle the lineHeight value
   if (typeof textStyle.lineHeight !== 'undefined') {
-    code += "paragraphStyle.minimumLineHeight = " + textStyle.lineHeight + "\n";
+    code += "paragraphStyle.minimumLineHeight = " + textStyle.lineHeight;
   }
 
   return code;
@@ -94,7 +94,7 @@ var swiftColors = require('./swiftColors.js')
 function getColorCode(context, color) {
   const existingColor = context.project.findColorEqual(color)
   if (typeof existingColor !== 'undefined') {
-    const structName = context.getOption("swiftColorStructName");
+    const structName = context.getOption("colorStructName");
     return `UIColor.${structName}.${camelCase(existingColor.name)}`
   } else {
     return swiftColors.getColorSwiftCode(color)

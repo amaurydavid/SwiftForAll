@@ -1,0 +1,32 @@
+{
+  "packageName": "ThePreciousExtension",
+  "name": "ThePreciousExtension",
+  "description": "One extension to rule them all. Get Swift & Kotlin snippets on both Android & iOS projects.",
+  "version": "0.1.0",
+  "options": [
+    {
+      "name": "Always show Swift snippets",
+      "type": "switch",
+      "id": "alwaysShowSwift",
+      "default": false
+    },
+    {
+      "name": "Always show XML snippets",
+      "type": "switch",
+      "id": "alwaysShowXML",
+      "default": false
+    },
+    {
+      "name": "Swift color structure name",
+      "type": "text",
+      "id": "swiftColorStructName",
+      "default": "MyProject"
+    }
+  ],
+  "projectTypes": [
+    "android",
+    "ios"
+  ],
+  "moduleURL": "./main.js",
+  "readmeURL": "./README.md"
+}

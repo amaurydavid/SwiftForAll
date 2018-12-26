@@ -1,7 +1,7 @@
 {
   "name": "SwiftForAll",
   "version": "0.1.0",
-  "description": "Swift snippets available on all project types!",
+  "description": "Generates Swift styleguide on all project types.",
   "scripts": {
     "start": "zem start",
     "build": "zem build",

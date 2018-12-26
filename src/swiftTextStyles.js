@@ -1,14 +1,7 @@
 function getTextStylesSwiftFileContent(context, textStyles) {
   return `import UIKit
 
-  ${getEnumCode(textStyles)}
-
-  extension TextStyle {
-    typealias Attributes = [NSAttributedString.Key:Any]
-
-    ${getAttributesCode(context, textStyles)}
-
-  }
+  ${getTextStylesSwiftSnippet(context,textStyles)}
 
   extension String {
     func styled(as style: TextStyle) -> NSAttributedString {
@@ -18,7 +11,15 @@ function getTextStylesSwiftFileContent(context, textStyles) {
   }`
 }
 
-module.exports = { getTextStylesSwiftFileContent };
+function getTextStylesSwiftSnippet(context, textStyles) {
+  return `${getEnumCode(textStyles)}
+
+  extension TextStyle {
+    ${getAttributesCode(context, textStyles)}
+  }`
+}
+
+module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet };
 
 // Private functions
 var camelCase = require('camel-case')
@@ -35,7 +36,7 @@ function getEnumCode(textStyles) {
 }
 
 function getAttributesCode(context, textStyles) {
-  var code = "var attributes: Attributes {\n";
+  var code = "var attributes: [NSAttributedString.Key: Any] {\n";
   code += "switch self {\n";
   for(var textStyle of textStyles) {
     code += "case ." + camelCase(textStyle.name) + ":\n";

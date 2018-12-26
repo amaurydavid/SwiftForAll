@@ -2,6 +2,10 @@
   "name": "SwiftForAll",
   "version": "0.1.0",
   "description": "Generates Swift styleguide on all project types.",
+  "author": {
+    "name": "Amaury DAVID"
+  },
+  "repository": "https://github.com/amaurydavid/SwiftForAll",
   "scripts": {
     "start": "zem start",
     "build": "zem build",

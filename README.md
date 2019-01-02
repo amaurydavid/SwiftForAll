@@ -9,9 +9,8 @@ You are an Swift developer and you are working on an app which is only available
 Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let you down.
 
 ## Getting Stated
-1. Go to https://extensions.zeplin.io/
-2. Search "Swift for all" in the extension
-3. Click on "Add to Zeplin"
+1. Go to https://extensions.zeplin.io/5c23c811a493040a8ba65679
+2. Click on "Add to Zeplin"
 
 ## Usage
 

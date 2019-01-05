@@ -19,7 +19,7 @@ Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let 
 
 ### Colors
 
-All colors are defined in a struct in UIColor. By default the struct name is "MyProject" but you can change its name in the extension's parameters.
+All colors are defined in a struct in UIColor. By default the struct is named from the project but you can override its name in the extension's parameters.
 
 ```swift
 extension UIColor {

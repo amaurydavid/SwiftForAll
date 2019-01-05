@@ -5,13 +5,18 @@
 
 var swiftColors = require("./swiftColors.js")
 var swiftTextStyles = require("./swiftTextStyles.js")
+var camelCase = require('camel-case')
+var utils = require("./utils.js")
 
 function layer(context, selectedLayer) {
 
 }
 
 function styleguideColors(context, colors) {
-  const structName = context.getOption("colorStructName");
+  var structName = context.getOption("colorStructName");
+  if (structName == "") {
+    structName = utils.capitalize(camelCase(context.project.name));
+  }
 
   var code = "// MARK: - Project Color palette\n\n";
   code += swiftColors.getColorsSwiftSnippet(structName, colors);

@@ -1,32 +1,42 @@
 {
-  "packageName": "ThePreciousExtension",
-  "name": "ThePreciousExtension",
-  "description": "One extension to rule them all. Get Swift & Kotlin snippets on both Android & iOS projects.",
-  "version": "0.1.0",
+  "packageName": "SwiftForAll",
+  "name": "SwiftForAll",
+  "description": "Generates Swift styleguide on all project types.",
+  "version": "0.1.1",
+  "author": {
+    "name": "Amaury DAVID"
+  },
   "options": [
     {
-      "name": "Always show Swift snippets",
-      "type": "switch",
-      "id": "alwaysShowSwift",
-      "default": false
-    },
-    {
-      "name": "Always show XML snippets",
-      "type": "switch",
-      "id": "alwaysShowXML",
-      "default": false
-    },
-    {
-      "name": "Swift color structure name",
+      "name": "Override color structure name",
       "type": "text",
-      "id": "swiftColorStructName",
-      "default": "MyProject"
+      "id": "colorStructName",
+      "default": ""
+    },
+    {
+      "name": "Font format in text styles",
+      "type": "picker",
+      "id": "fontFormat",
+      "options": [
+        {
+          "name": "System",
+          "value": "system"
+        },
+        {
+          "name": "SwiftGen",
+          "value": "swiftgen"
+        }
+      ],
+      "default": "system"
     }
   ],
   "projectTypes": [
     "android",
-    "ios"
+    "ios",
+    "osx",
+    "web"
   ],
-  "moduleURL": "./main.js",
+  "moduleURL": "./main.1fba2032.js",
+  "repository": "https://github.com///github.com/amaurydavid/SwiftForAll",
   "readmeURL": "./README.md"
 }

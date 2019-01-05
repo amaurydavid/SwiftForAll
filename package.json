@@ -1,6 +1,6 @@
 {
   "name": "SwiftForAll",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generates Swift styleguide on all project types.",
   "author": {
     "name": "Amaury DAVID"
@@ -23,10 +23,10 @@
     ],
     "options": [
       {
-        "name": "Color structure name",
+        "name": "Override color structure name",
         "type": "text",
         "id": "colorStructName",
-        "default": "MyProject"
+        "default": ""
       },
       {
         "name": "Font format in text styles",

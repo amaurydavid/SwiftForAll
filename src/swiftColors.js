@@ -27,10 +27,14 @@ function getColorsSwiftFileContent(context, colors) {
   var code = "import UIKit\n\n";
   code += getColorsSwiftSnippet(context, colors);
 
-  //Add the UIColor hex init if needed
-  if (context.getOption("colorPreferHex") == true) {
-    code += "\n\n" + getSwiftHexColorExtension();
+  const colorFormat = context.getOption("colorFormat");
+  if (colorFormat == "rgb") {
+    return code;
   }
+
+  //Add the UIColor hex init
+  const alphaFirst = context.getOption("colorFormat") == "hex_argb"
+  code += "\n\n" + getSwiftHexColorExtension(alphaFirst);
 
   return code
 }
@@ -40,11 +44,18 @@ function getExistingColorSwiftCode(context, color) {
 }
 
 function getColorSwiftCode(context, color) {
-  if (context.getOption("colorPreferHex") == true) {
-    const hexColor = color.toHex();
-    return `UIColor(rgbaValue:0x${hexColor.r}${hexColor.g}${hexColor.b}${hexColor.a})`;
-  } else {
+  const formatOption = context.getOption("colorFormat");
+  if (formatOption == "rgb") {
     return `UIColor(red: ${color.r}/255.0, green: ${color.g}/255.0, blue: ${color.b}/255.0, alpha: ${color.a})`;
+  }
+
+  const hexColor = color.toHex();
+  if (formatOption == "hex_rgba") {
+    const parameterName = getSwiftHexInitParameterName(false);
+    return `UIColor(${parameterName}:0x${hexColor.r}${hexColor.g}${hexColor.b}${hexColor.a})`;
+  } else if (formatOption == "hex_argb") {
+    const parameterName = getSwiftHexInitParameterName(true);
+    return `UIColor(${parameterName}:0x${hexColor.a}${hexColor.r}${hexColor.g}${hexColor.b})`;
   }
 }
 
@@ -69,14 +80,24 @@ function getColorDeclarationSwiftCode(context, color) {
   return `static let ${camelCase(color.name)} = ${getColorSwiftCode(context, color)}`;
 }
 
-function getSwiftHexColorExtension() {
+function getSwiftHexInitParameterName(alphaFirst) {
+  return alphaFirst ? "argbValue" : "rgbaValue";
+}
+
+function getSwiftHexColorExtension(alphaFirst) {
+  const parameterName = getSwiftHexInitParameterName(alphaFirst);
+  const redShifintgValue = alphaFirst ? 16 : 24;
+  const greenShiftingValue = alphaFirst ? 8 : 16;
+  const blueShiftingValue = alphaFirst ? 0 : 8;
+  const alphaShiftingValue = alphaFirst ? 24 : 0;
+
   return `
 extension Color {
-  convenience init(rgbaValue: UInt32) {
-    let red   = CGFloat((rgbaValue >> 24) & 0xff) / 255.0
-    let green = CGFloat((rgbaValue >> 16) & 0xff) / 255.0
-    let blue  = CGFloat((rgbaValue >>  8) & 0xff) / 255.0
-    let alpha = CGFloat((rgbaValue      ) & 0xff) / 255.0
+  convenience init(${parameterName}: UInt32) {
+    let red   = CGFloat((${parameterName} >> ${redShifintgValue}) & 0xff) / 255.0
+    let green = CGFloat((${parameterName} >> ${greenShiftingValue}) & 0xff) / 255.0
+    let blue  = CGFloat((${parameterName} >> ${blueShiftingValue}) & 0xff) / 255.0
+    let alpha = CGFloat((${parameterName} >> ${alphaShiftingValue}) & 0xff) / 255.0
 
     self.init(red: red, green: green, blue: blue, alpha: alpha)
   }

@@ -2,7 +2,7 @@
   "packageName": "SwiftForAll",
   "name": "SwiftForAll",
   "description": "Generates Swift styleguide on all project types.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": {
     "name": "Amaury DAVID"
   },
@@ -14,10 +14,24 @@
       "default": ""
     },
     {
-      "name": "Prefer hex over rgb",
-      "type": "switch",
-      "id": "colorPreferHex",
-      "default": false
+      "name": "Color format declaration",
+      "type": "picker",
+      "id": "colorFormat",
+      "options": [
+        {
+          "name": "RGB (iOS & macOS default)",
+          "value": "rgb"
+        },
+        {
+          "name": "Hex RGBA (like web)",
+          "value": "hex_rgba"
+        },
+        {
+          "name": "Hex ARGB (like Android)",
+          "value": "hex_argb"
+        }
+      ],
+      "default": "rgb"
     },
     {
       "name": "Font format in text styles",
@@ -42,7 +56,7 @@
     "osx",
     "web"
   ],
-  "moduleURL": "./main.00c114cb.js",
+  "moduleURL": "./main.251680fc.js",
   "repository": "https://github.com///github.com/amaurydavid/SwiftForAll",
   "readmeURL": "./README.md"
 }

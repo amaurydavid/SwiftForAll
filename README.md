@@ -18,7 +18,7 @@ Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let 
 
 ### Colors
 
-All colors are defined in a struct in UIColor. By default the struct is named from the project but you can override its name in the extension's parameters.
+All colors are defined in a struct in UIColor. By default the struct is named from the project but you can override it with the `Override color structure name` option.
 
 ```swift
 extension UIColor {
@@ -35,11 +35,18 @@ extension UIColor {
 view.backgroundColor = UIColor.MyProject.pink
 ```
 
-The `Prefer hex over rgb` option allows you to use hex values instead of rgb:
-```
+With the option `Color format declaration` you can use different color formatting:
+```swift
+//RGB (iOS & macOS default)
+static let blue1 = UIColor(red: 68/255.0, green: 104/255.0, blue: 234/255.0, alpha: 1)
+
+//Hex RGBA (like web)
 static let blue1 = UIColor(rgbaValue:0x4468eaff)
+
+//Hex ARGB (like Android)
+static let blue1 = UIColor(argbValue:0xff4468ea)
 ```
-Please note that the format is RGBA, which is the dominant format in web environments but differs from Android (ARGB).
+Please note that the convenience UIColor hex init code doesn't appear in the snippet to keep it clean, but is actually included in the file if you export colors.
 
 ### Text styles
 

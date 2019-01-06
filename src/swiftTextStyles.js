@@ -105,10 +105,9 @@ function getParagraphStyleCreationCode(textStyle) {
 function getColorCode(context, color) {
   const existingColor = context.project.findColorEqual(color)
   if (typeof existingColor !== 'undefined') {
-    const structName = context.getOption("colorStructName");
-    return `UIColor.${structName}.${camelCase(existingColor.name)}`
+    return swiftColors.getExistingColorSwiftCode(context, existingColor)
   } else {
-    return swiftColors.getColorSwiftCode(color)
+    return swiftColors.getColorSwiftCode(context, color)
   }
 }
 

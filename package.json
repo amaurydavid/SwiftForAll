@@ -29,6 +29,12 @@
         "default": ""
       },
       {
+        "name": "Prefer hex over rgb",
+        "type": "switch",
+        "id": "colorPreferHex",
+        "default": false
+      },
+      {
         "name": "Font format in text styles",
         "type": "picker",
         "id": "fontFormat",

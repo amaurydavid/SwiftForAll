@@ -36,6 +36,12 @@ extension UIColor {
 view.backgroundColor = UIColor.MyProject.pink
 ```
 
+The `Prefer hex over rgb` option allows you to use hex values instead of rgb:
+```
+static let blue1 = UIColor(rgbaValue:0x4468eaff)
+```
+Please note that the format is RGBA, which is the dominant format in web environments but differs from Android (ARGB).
+
 ### Text styles
 
 Unlike the original Swift extension which only generate code for fonts, **Swift for all** generates the actuel text style by using all available parameters: font, font size, line height, text color, letter spacing, etc.
@@ -99,7 +105,6 @@ case .body:
 ## What's next ?
 
 Here is a non-exhaustive list of future features to come:
-- [ ] Shorten the color declaration by using an extension
 - [ ] Add the possibility to use `NSAttributedString.Key.lineSpacing` instead of  `NSAttributedString.Key.minimumLineHeight`
 - [ ] Generate screen snippets on text layers
 - [ ] Select the Swift version as with the original Swift extension

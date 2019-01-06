@@ -6,4 +6,9 @@ function tab(count) {
   return result;
 }
 
-module.exports = { tab };
+function capitalize(s)
+{
+  return s && s[0].toUpperCase() + s.slice(1);
+}
+
+module.exports = { tab, capitalize };

@@ -6,15 +6,12 @@
 var swiftColors = require("./swiftColors.js")
 var swiftTextStyles = require("./swiftTextStyles.js")
 
-function layer(context, selectedLayer) {
-
-}
+function layer(context, selectedLayer) {}
 
 function styleguideColors(context, colors) {
-  const structName = context.getOption("colorStructName");
 
   var code = "// MARK: - Project Color palette\n\n";
-  code += swiftColors.getColorsSwiftSnippet(structName, colors);
+  code += swiftColors.getColorsSwiftSnippet(context, colors);
 
   return {
     code: code,
@@ -23,7 +20,6 @@ function styleguideColors(context, colors) {
 }
 
 function styleguideTextStyles(context, textStyles) {
-
   var code = "// MARK: - Project Texts styles\n\n";
   code += swiftTextStyles.getTextStylesSwiftSnippet(context,textStyles)
 
@@ -34,10 +30,9 @@ function styleguideTextStyles(context, textStyles) {
 }
 
 function exportStyleguideColors(context, colors) {
-  const structName = context.getOption("colorStructName");
-
+  const structName = swiftColors.getColorStructName(context)
   return {
-    code: swiftColors.getColorsSwiftFileContent(structName, colors),
+    code: swiftColors.getColorsSwiftFileContent(context, colors),
     language: "swift",
     filename: "UIColor+" + structName + ".swift"
   };

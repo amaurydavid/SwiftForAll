@@ -9,9 +9,8 @@ You are an Swift developer and you are working on an app which is only available
 Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let you down.
 
 ## Getting Stated
-1. Go to https://extensions.zeplin.io/
-2. Search "Swift for all" in the extension
-3. Click on "Add to Zeplin"
+1. Go to https://extensions.zeplin.io/5c23c811a493040a8ba65679
+2. Click on "Add to Zeplin"
 
 ## Usage
 
@@ -19,7 +18,7 @@ Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let 
 
 ### Colors
 
-All colors are defined in a struct in UIColor. By default the struct name is "MyProject" but you can change its name in the extension's parameters.
+All colors are defined in a struct in UIColor. By default the struct is named from the project but you can override it with the `Override color structure name` option.
 
 ```swift
 extension UIColor {
@@ -35,6 +34,19 @@ extension UIColor {
 
 view.backgroundColor = UIColor.MyProject.pink
 ```
+
+With the option `Color format declaration` you can use different color formatting:
+```swift
+//RGB (iOS & macOS default)
+static let blue1 = UIColor(red: 68/255.0, green: 104/255.0, blue: 234/255.0, alpha: 1)
+
+//Hex RGBA (like web)
+static let blue1 = UIColor(rgbaValue:0x4468eaff)
+
+//Hex ARGB (like Android)
+static let blue1 = UIColor(argbValue:0xff4468ea)
+```
+Please note that the convenience UIColor hex init code doesn't appear in the snippet to keep it clean, but is actually included in the file if you export colors.
 
 ### Text styles
 
@@ -99,7 +111,6 @@ case .body:
 ## What's next ?
 
 Here is a non-exhaustive list of future features to come:
-- [ ] Shorten the color declaration by using an extension
 - [ ] Add the possibility to use `NSAttributedString.Key.lineSpacing` instead of  `NSAttributedString.Key.minimumLineHeight`
 - [ ] Generate screen snippets on text layers
 - [ ] Select the Swift version as with the original Swift extension

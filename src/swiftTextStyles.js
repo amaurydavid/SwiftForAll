@@ -6,16 +6,15 @@ var swiftColors = require('./swiftColors.js')
 // Public functions
 
 function getTextStylesSwiftFileContent(context, textStyles) {
-  return `import UIKit
+  const usesSystemFontFormat = context.getOption("fontFormat") == "system";
 
-${getTextStylesSwiftSnippet(context,textStyles, true)}
-
-extension String {
-  func styled(as style: TextStyle) -> NSAttributedString {
-    return NSAttributedString(string: self,
-                              attributes: style.attributes)
+  var code = "";
+  if (usesSystemFontFormat) {
+    code += getSwiftFontImportCode() + "\n\n";
   }
-}`
+  code += getTextStylesSwiftSnippet(context,textStyles, true)
+  code += getSwiftConvenienceStringExt()
+  return code
 }
 
 function getTextStylesSwiftSnippet(context, textStyles, forExport) {
@@ -30,6 +29,37 @@ module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet };
 
 // Private functions
 var camelCase = require('camel-case')
+
+function getSwiftConvenienceStringExt() {
+  return
+`extension String {
+  func styled(as style: TextStyle) -> NSAttributedString {
+    return NSAttributedString(string: self,
+                              attributes: style.attributes)
+  }
+}`;
+}
+
+function getSwiftFontImportCode() {
+  return `#if os(OSX)
+  import AppKit.NSFont
+  internal typealias Font = NSFont
+#elseif os(iOS) || os(tvOS) || os(watchOS)
+  import UIKit.UIFont
+  internal typealias Font = UIFont
+#endif
+`;
+}
+
+function getFontSwiftType(context, forExport) {
+  if (forExport) {
+    return "Font";
+  }
+  if (context.project.type == "osx") {
+    return "NSFont";
+  }
+  return "UIFont";
+}
 
 function getEnumCode(textStyles) {
   var code = "enum TextStyle {\n";
@@ -51,7 +81,7 @@ function getAttributesCode(context, textStyles, forExport) {
       code += getParagraphStyleCreationCode(textStyle) + "\n";
     }
 
-    code += utils.tab(3) + "return [.font: " + getFontCode(context, textStyle);
+    code += utils.tab(3) + "return [.font: " + getFontCode(context, textStyle, forExport);
     if (shouldUseParagraphStyle(textStyle)) {
       code += ",\n" + utils.tab(4) + ".paragraphStyle: paragraphStyle";
     }
@@ -69,10 +99,11 @@ function getAttributesCode(context, textStyles, forExport) {
   return code;
 }
 
-function getFontCode(context, textStyle) {
-  const fontFormat = context.getOption("fontFormat")
+function getFontCode(context, textStyle, forExport) {
+  const fontFormat = context.getOption("fontFormat");
   if (fontFormat == "system") {
-    return `UIFont(name: "${textStyle.fontFace}", size: ${textStyle.fontSize})`
+    const fontType = getFontSwiftType(context, forExport);
+    return `${fontType}(name: "${textStyle.fontFace}", size: ${textStyle.fontSize})`
   } else if (fontFormat == "swiftgen") {
     return `FontFamily.${textStyle.fontFamily}.${textStyle.weightText}.font(size: ${textStyle.fontSize})`;
   }

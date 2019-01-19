@@ -16,6 +16,10 @@ Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let 
 
 **Swift for all** currently only generates Swift code for your project's styleguide. Snippets are not available when selecting layers in a screen.
 
+>Preliminary note: All following examples use UIKit. Please be aware that despite this, **Swift for all** supports macOS projects, hence AppKit.
+When visualized in Zeplin, snippets use AppKit on osX projects and UIKit on others.
+However, in exported files the import statement checks the compilation platform to use one or the other.
+
 ### Colors
 
 All colors are defined in a struct in UIColor. By default the struct is named from the project but you can override it with the `Override color structure name` option.

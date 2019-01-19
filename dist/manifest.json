@@ -2,7 +2,7 @@
   "packageName": "SwiftForAll",
   "name": "SwiftForAll",
   "description": "Generates Swift styleguide on all project types.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Amaury DAVID"
   },
@@ -56,7 +56,7 @@
     "osx",
     "web"
   ],
-  "moduleURL": "./main.251680fc.js",
+  "moduleURL": "./main.691e8a35.js",
   "repository": "https://github.com///github.com/amaurydavid/SwiftForAll",
   "readmeURL": "./README.md"
 }

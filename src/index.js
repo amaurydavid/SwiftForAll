@@ -11,7 +11,7 @@ function layer(context, selectedLayer) {}
 function styleguideColors(context, colors) {
 
   var code = "// MARK: - Project Color palette\n\n";
-  code += swiftColors.getColorsSwiftSnippet(context, colors);
+  code += swiftColors.getColorsSwiftSnippet(context, colors, false);
 
   return {
     code: code,
@@ -21,7 +21,7 @@ function styleguideColors(context, colors) {
 
 function styleguideTextStyles(context, textStyles) {
   var code = "// MARK: - Project Texts styles\n\n";
-  code += swiftTextStyles.getTextStylesSwiftSnippet(context,textStyles)
+  code += swiftTextStyles.getTextStylesSwiftSnippet(context,textStyles, false)
 
   return {
     code: code,

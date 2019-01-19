@@ -8,20 +8,20 @@ var swiftColors = require('./swiftColors.js')
 function getTextStylesSwiftFileContent(context, textStyles) {
   return `import UIKit
 
-  ${getTextStylesSwiftSnippet(context,textStyles)}
+${getTextStylesSwiftSnippet(context,textStyles, true)}
 
-  extension String {
-    func styled(as style: TextStyle) -> NSAttributedString {
-      return NSAttributedString(string: self,
-                                attributes: style.attributes)
-    }
-  }`
+extension String {
+  func styled(as style: TextStyle) -> NSAttributedString {
+    return NSAttributedString(string: self,
+                              attributes: style.attributes)
+  }
+}`
 }
 
-function getTextStylesSwiftSnippet(context, textStyles) {
+function getTextStylesSwiftSnippet(context, textStyles, forExport) {
   var code = getEnumCode(textStyles) + "\n\n";
   code += "extension TextStyle {\n";
-  code += utils.tab(1) + getAttributesCode(context, textStyles);
+  code += utils.tab(1) + getAttributesCode(context, textStyles, forExport);
   code += "\n}";
   return code
 }
@@ -42,7 +42,7 @@ function getEnumCode(textStyles) {
   return code;
 }
 
-function getAttributesCode(context, textStyles) {
+function getAttributesCode(context, textStyles, forExport) {
   var code = "var attributes: [NSAttributedString.Key: Any] {\n";
   code += utils.tab(2) + "switch self {\n";
   for(var textStyle of textStyles) {
@@ -56,7 +56,7 @@ function getAttributesCode(context, textStyles) {
       code += ",\n" + utils.tab(4) + ".paragraphStyle: paragraphStyle";
     }
     if (typeof textStyle.color !== 'undefined') {
-      code += ",\n" + utils.tab(4) + ".foregroundColor: " + getColorCode(context, textStyle.color);
+      code += ",\n" + utils.tab(4) + ".foregroundColor: " + getColorCode(context, textStyle.color, forExport);
     }
     if (typeof textStyle.letterSpacing !== 'undefined' && textStyle.letterSpacing != 0) {
       code += ",\n" + utils.tab(4) + ".kern: " + textStyle.letterSpacing;
@@ -102,12 +102,12 @@ function getParagraphStyleCreationCode(textStyle) {
   return code;
 }
 
-function getColorCode(context, color) {
+function getColorCode(context, color, forExport) {
   const existingColor = context.project.findColorEqual(color)
   if (typeof existingColor !== 'undefined') {
-    return swiftColors.getExistingColorSwiftCode(context, existingColor)
+    return swiftColors.getExistingColorSwiftCode(context, existingColor, forExport)
   } else {
-    return swiftColors.getColorSwiftCode(context, color)
+    return swiftColors.getColorSwiftCode(context, color, forExport)
   }
 }
 

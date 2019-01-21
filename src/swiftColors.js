@@ -75,7 +75,7 @@ function getSwiftColorImport() {
   internal typealias Color = NSColor
 #elseif os(iOS) || os(tvOS) || os(watchOS)
   import UIKit.UIColor
-  private typealias Color = UIColor
+  internal typealias Color = UIColor
 #endif
 
 `;

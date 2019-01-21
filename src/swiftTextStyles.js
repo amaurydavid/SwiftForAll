@@ -100,10 +100,18 @@ function getAttributesCode(context, textStyles, forExport) {
 }
 
 function getFontCode(context, textStyle, forExport) {
+
+  const fontType = getFontSwiftType(context, forExport);
+
+  if (textStyle.fontFamily.startsWith("SFPro") ||
+      textStyle.fontFamily.startsWith("SFCompact")) {
+    const fontWeightCode = ".init(rawValue: " + textStyle.fontWeight + ")";
+    return "${fontType}.systemFont(ofSize:" + textStyle.fontSize + ", weight: " + fontWeightCode + ")";
+  }
+
   const fontFormat = context.getOption("fontFormat");
   if (fontFormat == "system") {
-    const fontType = getFontSwiftType(context, forExport);
-    return `${fontType}(name: "${textStyle.fontFace}", size: ${textStyle.fontSize})`
+    return `${fontType}(name: "${textStyle.fontFace}", size: ${textStyle.fontSize}) as Any`
   } else if (fontFormat == "swiftgen") {
     return `FontFamily.${textStyle.fontFamily}.${textStyle.weightText}.font(size: ${textStyle.fontSize})`;
   }

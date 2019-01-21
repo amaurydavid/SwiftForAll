@@ -6,14 +6,9 @@ var swiftColors = require('./swiftColors.js')
 // Public functions
 
 function getTextStylesSwiftFileContent(context, textStyles) {
-  const usesSystemFontFormat = context.getOption("fontFormat") == "system";
-
-  var code = "";
-  if (usesSystemFontFormat) {
-    code += getSwiftFontImportCode() + "\n\n";
-  }
-  code += getTextStylesSwiftSnippet(context,textStyles, true)
-  code += getSwiftConvenienceStringExt()
+  var code = getSwiftFontImportCode(context) + "\n\n";
+  code += getTextStylesSwiftSnippet(context,textStyles, true) + "\n\n";
+  code += getSwiftConvenienceStringExt();
   return code
 }
 
@@ -31,8 +26,7 @@ module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet };
 var camelCase = require('camel-case')
 
 function getSwiftConvenienceStringExt() {
-  return
-`extension String {
+  return `extension String {
   func styled(as style: TextStyle) -> NSAttributedString {
     return NSAttributedString(string: self,
                               attributes: style.attributes)
@@ -41,14 +35,26 @@ function getSwiftConvenienceStringExt() {
 }
 
 function getSwiftFontImportCode() {
-  return `#if os(OSX)
-  import AppKit.NSFont
-  internal typealias Font = NSFont
-#elseif os(iOS) || os(tvOS) || os(watchOS)
-  import UIKit.UIFont
-  internal typealias Font = UIFont
-#endif
+  const usesSwiftGen = context.getOption("fontFormat") == "swiftgen";
+
+  var code = `#if os(OSX)
+import AppKit.NSFont
 `;
+
+  if (!usesSwiftGen) {
+    code += "internal typealias Font = NSFont\n";
+  }
+
+  code += `#elseif os(iOS) || os(tvOS) || os(watchOS)
+import UIKit.UIFont
+`;
+
+  if (!usesSwiftGen) {
+    code += "internal typealias Font = UIFont\n";
+  }
+
+  code += "#endif\n";
+  return code;
 }
 
 function getFontSwiftType(context, forExport) {
@@ -100,10 +106,18 @@ function getAttributesCode(context, textStyles, forExport) {
 }
 
 function getFontCode(context, textStyle, forExport) {
+
+  const fontType = getFontSwiftType(context, forExport);
+
+  if (textStyle.fontFamily.startsWith("SFPro") ||
+      textStyle.fontFamily.startsWith("SFCompact")) {
+    const fontWeightCode = ".init(rawValue: " + textStyle.fontWeight + ")";
+    return fontType + ".systemFont(ofSize:" + textStyle.fontSize + ", weight: " + fontWeightCode + ")";
+  }
+
   const fontFormat = context.getOption("fontFormat");
   if (fontFormat == "system") {
-    const fontType = getFontSwiftType(context, forExport);
-    return `${fontType}(name: "${textStyle.fontFace}", size: ${textStyle.fontSize})`
+    return `${fontType}(name: "${textStyle.fontFace}", size: ${textStyle.fontSize}) as Any`
   } else if (fontFormat == "swiftgen") {
     return `FontFamily.${textStyle.fontFamily}.${textStyle.weightText}.font(size: ${textStyle.fontSize})`;
   }

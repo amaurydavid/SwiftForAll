@@ -71,7 +71,7 @@ extension TextStyle {
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.alignment = .center
       paragraphStyle.minimumLineHeight = 28.2
-      return [.font: UIFont(name: "Canaro-Bold", size: 20),
+      return [.font: UIFont.systemFont(ofSize: 22, weight: .bold),
               .paragraphStyle: paragraphStyle,
               .foregroundColor: UIColor.MyProject.blue1]
 

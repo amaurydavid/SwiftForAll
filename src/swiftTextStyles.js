@@ -111,8 +111,8 @@ function getFontCode(context, textStyle, forExport) {
 
   if (textStyle.fontFamily.startsWith("SFPro") ||
       textStyle.fontFamily.startsWith("SFCompact")) {
-    const fontWeightCode = ".init(rawValue: " + textStyle.fontWeight + ")";
-    return fontType + ".systemFont(ofSize:" + textStyle.fontSize + ", weight: " + fontWeightCode + ")";
+    const fontWeightCode = "." + textStyle.weightText.toLowerCase();
+    return fontType + ".systemFont(ofSize: " + textStyle.fontSize + ", weight: " + fontWeightCode + ")";
   }
 
   const fontFormat = context.getOption("fontFormat");

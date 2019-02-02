@@ -63,6 +63,26 @@
           }
         ],
         "default": "system"
+      },
+      {
+        "name": "UI framework used in snippets",
+        "type": "picker",
+        "id": "snippetFramework",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "UIKit",
+            "value": "forceUIKit"
+          },
+          {
+            "name": "AppKit",
+            "value": "forceAppKit"
+          }
+        ],
+        "default": "default"
       }
     ]
   },

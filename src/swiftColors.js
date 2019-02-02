@@ -95,6 +95,17 @@ function getColorSwiftType(context, forExport) {
   if (forExport) {
     return "Color";
   }
+
+  const frameworkOption = context.getOption("snippetFramework");
+
+  //Forced snippets frameworks
+  if (frameworkOption == "forceAppKit") {
+    return "NSColor";
+  } else if (frameworkOption == "forceUIKit") {
+    return "UIColor";
+  }
+
+  //Default snippet framework
   if (context.project.type == "osx") {
     return "NSColor";
   }

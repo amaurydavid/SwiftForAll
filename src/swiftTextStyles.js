@@ -61,6 +61,17 @@ function getFontSwiftType(context, forExport) {
   if (forExport) {
     return "Font";
   }
+
+  const frameworkOption = context.getOption("snippetFramework");
+
+  //Forced snippets frameworks
+  if (frameworkOption == "forceAppKit") {
+    return "NSFont";
+  } else if (frameworkOption == "forceUIKit") {
+    return "UIFont";
+  }
+
+  //Default snippet framework
   if (context.project.type == "osx") {
     return "NSFont";
   }

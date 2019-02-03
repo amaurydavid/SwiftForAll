@@ -5,8 +5,14 @@
 
 var swiftColors = require("./swiftColors.js")
 var swiftTextStyles = require("./swiftTextStyles.js")
+var swiftLayers = require("./swiftLayers.js")
 
-function layer(context, selectedLayer) {}
+function layer(context, selectedLayer) {
+  return {
+    code: swiftLayers.getLayerSwiftCode(context, selectedLayer),
+  language: "swift"
+  };
+}
 
 function styleguideColors(context, colors) {
 

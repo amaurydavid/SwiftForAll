@@ -15,12 +15,44 @@ function getTextStylesSwiftFileContent(context, textStyles) {
 function getTextStylesSwiftSnippet(context, textStyles, forExport) {
   var code = getEnumCode(textStyles) + "\n\n";
   code += "extension TextStyle {\n";
-  code += utils.tab(1) + getAttributesCode(context, textStyles, forExport);
+  code += utils.tab(1) + getAllAttributesCode(context, textStyles, forExport) + "\n\n";
   code += "\n}";
   return code
 }
 
-module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet };
+function getAttributesCode(context, textStyle, forStyleguide, forExport, indent) {
+  var code = "";
+
+  const usesParagraphStyle = shouldUseParagraphStyle(textStyle);
+  if (usesParagraphStyle) {
+    code += getParagraphStyleCreationCode(textStyle, indent) + "\n";
+  }
+
+  if (forStyleguide) {
+    code += utils.tab(indent) + "return ";
+  } else {
+    code += "let attributes = ";
+  }
+
+  code += "[.font: " + getFontCode(context, textStyle, forExport);
+
+  indent = indent + 1;
+
+  if (usesParagraphStyle) {
+    code += ",\n" + utils.tab(indent) + ".paragraphStyle: paragraphStyle";
+  }
+  if (typeof textStyle.color !== 'undefined') {
+    code += ",\n" + utils.tab(indent) + ".foregroundColor: " + getColorCode(context, textStyle.color, forExport);
+  }
+  if (typeof textStyle.letterSpacing !== 'undefined' && textStyle.letterSpacing != 0) {
+    code += ",\n" + utils.tab(indent) + ".kern: " + textStyle.letterSpacing;
+  }
+
+  code += "]";
+  return code;
+}
+
+module.exports = { getTextStylesSwiftFileContent, getTextStylesSwiftSnippet, getAttributesCode };
 
 // Private functions
 var camelCase = require('camel-case')
@@ -61,6 +93,17 @@ function getFontSwiftType(context, forExport) {
   if (forExport) {
     return "Font";
   }
+
+  const frameworkOption = context.getOption("snippetFramework");
+
+  //Forced snippets frameworks
+  if (frameworkOption == "forceAppKit") {
+    return "NSFont";
+  } else if (frameworkOption == "forceUIKit") {
+    return "UIFont";
+  }
+
+  //Default snippet framework
   if (context.project.type == "osx") {
     return "NSFont";
   }
@@ -78,27 +121,12 @@ function getEnumCode(textStyles) {
   return code;
 }
 
-function getAttributesCode(context, textStyles, forExport) {
+function getAllAttributesCode(context, textStyles, forExport) {
   var code = "var attributes: [NSAttributedString.Key: Any] {\n";
   code += utils.tab(2) + "switch self {\n";
   for(var textStyle of textStyles) {
     code += utils.tab(2) + "case ." + camelCase(textStyle.name) + ":\n";
-    if (shouldUseParagraphStyle(textStyle)) {
-      code += getParagraphStyleCreationCode(textStyle) + "\n";
-    }
-
-    code += utils.tab(3) + "return [.font: " + getFontCode(context, textStyle, forExport);
-    if (shouldUseParagraphStyle(textStyle)) {
-      code += ",\n" + utils.tab(4) + ".paragraphStyle: paragraphStyle";
-    }
-    if (typeof textStyle.color !== 'undefined') {
-      code += ",\n" + utils.tab(4) + ".foregroundColor: " + getColorCode(context, textStyle.color, forExport);
-    }
-    if (typeof textStyle.letterSpacing !== 'undefined' && textStyle.letterSpacing != 0) {
-      code += ",\n" + utils.tab(4) + ".kern: " + textStyle.letterSpacing;
-    }
-
-    code += "]\n\n";
+    code += getAttributesCode(context, textStyle, true, forExport, 3) + "\n\n";
   }
   code += utils.tab(2) + "}\n";
   code += utils.tab(1) + "}";
@@ -128,20 +156,20 @@ function shouldUseParagraphStyle(textStyle) {
   || (typeof textStyle.lineHeight !== 'undefined');
 }
 
-function getParagraphStyleCreationCode(textStyle) {
-  var code = utils.tab(3) + "let paragraphStyle = NSMutableParagraphStyle()\n";
+function getParagraphStyleCreationCode(textStyle, indent) {
+  var code = utils.tab(indent) + "let paragraphStyle = NSMutableParagraphStyle()\n";
   //Handle the textAlign value
   if (typeof textStyle.textAlign !== 'undefined') {
     var swiftValue = textStyle.textAlign;
     if (swiftValue == "justify") {
       swiftValue = "justified";
     }
-    code += utils.tab(3) + "paragraphStyle.alignment = ." + swiftValue + "\n";
+    code += utils.tab(indent) + "paragraphStyle.alignment = ." + swiftValue + "\n";
   }
 
   //Handle the lineHeight value
   if (typeof textStyle.lineHeight !== 'undefined') {
-    code += utils.tab(3) + "paragraphStyle.minimumLineHeight = " + textStyle.lineHeight;
+    code += utils.tab(indent) + "paragraphStyle.minimumLineHeight = " + textStyle.lineHeight;
   }
 
   return code;

@@ -17,8 +17,9 @@ Whether it is a web, iOS, Android or macOS project, **Swift for all** won't let 
 **Swift for all** currently only generates Swift code for your project's styleguide. Snippets are not available when selecting layers in a screen.
 
 >Preliminary note: All following examples use UIKit. Please be aware that despite this, **Swift for all** supports macOS projects, hence AppKit.
-When visualized in Zeplin, snippets use AppKit on osX projects and UIKit on others.
-However, in exported files the import statement checks the compilation platform to use one or the other.
+With the ```UI framework used in snippets``` option, you can choose which framework is used in snippets. Its default behavior is to use AppKit on macOS projects, and UIKit on all others.
+However, in exported files the import statement checks the compilation platform to automatically use one or the other.
+
 
 ### Colors
 
@@ -111,12 +112,25 @@ case .body:
   return [.font: FontFamily.Roboto.medium.font(size: 13)]
 ```
 
+### Layers
+
+When selecting a text layer, **Swift for All** provides you the NSAttributedString using the layer's text and the layer's text style.
+```
+let paragraphStyle = NSMutableParagraphStyle()
+paragraphStyle.alignment = .center
+paragraphStyle.minimumLineHeight = 24.91753016590529
+let attributes = [.font: UIFont(name: "Roboto-Bold", size: 18) as Any,
+                  .paragraphStyle: paragraphStyle,
+                  .foregroundColor: UIColor(argbValue:0xffffffff)]
+let attrString = NSAttributedString(string:"Hello world!", attributes: attributes)
+```
+
+>Note: At the moment, **Swift for all** does not support multiple text styles on a layer. If your layer does use multiple text styles, only the first one will be used to generate the snippet. 
 
 ## What's next ?
 
 Here is a non-exhaustive list of future features to come:
 - [ ] Add the possibility to use `NSAttributedString.Key.lineSpacing` instead of  `NSAttributedString.Key.minimumLineHeight`
-- [ ] Generate screen snippets on text layers
 - [ ] Select the Swift version as with the original Swift extension
 
 

@@ -7,8 +7,12 @@ var swiftColors = require('./swiftColors.js')
 
 function getTextStylesSwiftFileContent(context, textStyles) {
   var code = getSwiftFontImportCode(context) + "\n\n";
+  code += "//swiftlint:disable file_length\n";
+  code += "//swiftlint:disable identifier_name\n\n";
   code += getTextStylesSwiftSnippet(context,textStyles, true) + "\n\n";
   code += getSwiftConvenienceStringExt();
+  code += "\n\n//swiftlint:enable identifier_name\n";
+  code += "//swiftlint:enable file_length\n";
   return code
 }
 

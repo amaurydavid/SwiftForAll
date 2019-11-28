@@ -28,21 +28,24 @@ function textStyles(context) {
   };
 }
 
-function exportTextStyles(context, textStyles) {
+function exportTextStyles(context) {
   var textStylesProject = context.project.textStyles
   var textStylesAll = textStylesProject.concat(context.project.linkedStyleguide.textStyles)
 
   return {
-    code: swiftTextStyles.getTextStylesSwiftFileContent(context,textStylesAll),
+    code: swiftTextStyles.getTextStylesSwiftFileContent(context, textStylesAll),
     language: "swift",
     filename: "TextStyles.swift"
   };
 }
 
-function styleguideColors(context, colors) {
-
+function colors(context) {
   var code = "// MARK: - Project Color palette\n\n";
-  code += swiftColors.getColorsSwiftSnippet(context, colors, false);
+
+  var colorsProject = context.project.colors
+  var colorsAll = colorsProject.concat(context.project.linkedStyleguide.colors)
+
+  code += swiftColors.getColorsSwiftSnippet(context, colorsAll, false);
 
   return {
     code: code,
@@ -50,10 +53,13 @@ function styleguideColors(context, colors) {
   };
 }
 
-function exportStyleguideColors(context, colors) {
+function exportColors(context) {
   const structName = swiftColors.getColorStructName(context)
+  var colorsProject = context.project.colors
+  var colorsAll = colorsProject.concat(context.project.linkedStyleguide.colors)
+  
   return {
-    code: swiftColors.getColorsSwiftFileContent(context, colors),
+    code: swiftColors.getColorsSwiftFileContent(context, colorsAll),
     language: "swift",
     filename: "UIColor+" + structName + ".swift"
   };
@@ -67,7 +73,7 @@ export default {
     layer,
     textStyles,
     exportTextStyles,    
-    styleguideColors,
-    exportStyleguideColors,
+    colors,
+    exportColors,
     comment
 };

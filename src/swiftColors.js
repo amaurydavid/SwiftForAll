@@ -5,7 +5,9 @@ var camelCase = require('camel-case')
 
 // Public functions
 
-function getColorsSwiftSnippet(context, colors, forExport) {
+function getColorsSwiftSnippet(context, forExport) {
+  const colors = utils.getResources(context, "colors");
+
   //Loop on every color
   var colorsCode = "";
   for (var color of colors){
@@ -22,10 +24,10 @@ function getColorsSwiftSnippet(context, colors, forExport) {
   return code;
 }
 
-function getColorsSwiftFileContent(context, colors) {
+function getColorsSwiftFileContent(context) {
   //Add import to the snippet
   var code = getSwiftColorImport();
-  code += getColorsSwiftSnippet(context, colors, true);
+  code += getColorsSwiftSnippet(context, true);
 
   const colorFormat = context.getOption("colorFormat");
   if (colorFormat == "rgb") {

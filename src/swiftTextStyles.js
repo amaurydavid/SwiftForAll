@@ -5,14 +5,15 @@ var swiftColors = require('./swiftColors.js')
 
 // Public functions
 
-function getTextStylesSwiftFileContent(context, textStyles) {
+function getTextStylesSwiftFileContent(context) {
   var code = getSwiftFontImportCode(context) + "\n\n";
-  code += getTextStylesSwiftSnippet(context,textStyles, true) + "\n\n";
+  code += getTextStylesSwiftSnippet(context, true) + "\n\n";
   code += getSwiftConvenienceStringExt();
   return code
 }
 
-function getTextStylesSwiftSnippet(context, textStyles, forExport) {
+function getTextStylesSwiftSnippet(context, forExport) {
+  const textStyles = utils.getResources(context, "textStyles");
   var code = getEnumCode(textStyles) + "\n\n";
   code += "extension TextStyle {\n";
   code += utils.tab(1) + getAllAttributesCode(context, textStyles, forExport) + "\n\n";
@@ -123,12 +124,18 @@ function getEnumCode(textStyles) {
 
 function getAllAttributesCode(context, textStyles, forExport) {
   var code = "var attributes: [NSAttributedString.Key: Any] {\n";
-  code += utils.tab(2) + "switch self {\n";
-  for(var textStyle of textStyles) {
-    code += utils.tab(2) + "case ." + camelCase(textStyle.name) + ":\n";
-    code += getAttributesCode(context, textStyle, true, forExport, 3) + "\n\n";
+
+  if (textStyles.length == 0) {
+    code += utils.tab(2) + "return [:]\n"
+  } else {
+    code += utils.tab(2) + "switch self {\n";
+    for(var textStyle of textStyles) {
+      code += utils.tab(2) + "case ." + camelCase(textStyle.name) + ":\n";
+      code += getAttributesCode(context, textStyle, true, forExport, 3) + "\n\n";
+    }
+    code += utils.tab(2) + "}\n";
   }
-  code += utils.tab(2) + "}\n";
+
   code += utils.tab(1) + "}";
   return code;
 }

@@ -88,6 +88,6 @@
   },
   "dependencies": {
     "camel-case": "^3.0.0",
-    "zem": "^0.3.3"
+    "zem": "^0.4.4"
   }
 }

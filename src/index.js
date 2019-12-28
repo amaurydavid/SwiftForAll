@@ -14,10 +14,9 @@ function layer(context, selectedLayer) {
   };
 }
 
-function styleguideColors(context, colors) {
-
-  var code = "// MARK: - Project Color palette\n\n";
-  code += swiftColors.getColorsSwiftSnippet(context, colors, false);
+function colors(context) {
+  var code = "// MARK: - Color palette\n\n";
+  code += swiftColors.getColorsSwiftSnippet(context, false);
 
   return {
     code: code,
@@ -25,8 +24,8 @@ function styleguideColors(context, colors) {
   };
 }
 
-function styleguideTextStyles(context, textStyles) {
-  var code = "// MARK: - Project Texts styles\n\n";
+function textStyles(context) {
+  var code = "// MARK: - Texts styles\n\n";
   code += swiftTextStyles.getTextStylesSwiftSnippet(context,textStyles, false)
 
   return {
@@ -35,16 +34,16 @@ function styleguideTextStyles(context, textStyles) {
   };
 }
 
-function exportStyleguideColors(context, colors) {
+function exportColors(context) {
   const structName = swiftColors.getColorStructName(context)
   return {
-    code: swiftColors.getColorsSwiftFileContent(context, colors),
+    code: swiftColors.getColorsSwiftFileContent(context),
     language: "swift",
     filename: "UIColor+" + structName + ".swift"
   };
 }
 
-function exportStyleguideTextStyles(context, textStyles) {
+function exportTextStyles(context) {
   return {
     code: swiftTextStyles.getTextStylesSwiftFileContent(context,textStyles),
     language: "swift",
@@ -58,9 +57,9 @@ function comment(context, text) {
 
 export default {
     layer,
-    styleguideColors,
-    styleguideTextStyles,
-    exportStyleguideColors,
-    exportStyleguideTextStyles,
+    colors,
+    textStyles,
+    exportColors,
+    exportTextStyles,
     comment
 };
